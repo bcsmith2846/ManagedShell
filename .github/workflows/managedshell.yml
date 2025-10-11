@@ -16,7 +16,7 @@ jobs:
       matrix:
         buildconfig: [ Release ]
 
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     env:
       project: src\ManagedShell\ManagedShell.csproj
