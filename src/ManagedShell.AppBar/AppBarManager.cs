@@ -19,6 +19,7 @@ namespace ManagedShell.AppBar
 
         public List<AppBarWindow> AppBars { get; } = new List<AppBarWindow>();
         public List<AppBarWindow> AutoHideBars { get; } = new List<AppBarWindow>();
+        public List<AppBarWindow> OverlappingBars { get; } = new List<AppBarWindow>();
 
         public AppBarManager(ExplorerHelper explorerHelper)
         {
@@ -213,6 +214,26 @@ namespace ManagedShell.AppBar
             AutoHideBars.Remove(window);
         }
 
+        public void RegisterOverlappingBar(AppBarWindow window)
+        {
+            if (OverlappingBars.Contains(window))
+            {
+                return;
+            }
+
+            OverlappingBars.Add(window);
+        }
+
+        public void UnregisterOverlappingBar(AppBarWindow window)
+        {
+            if (!OverlappingBars.Contains(window))
+            {
+                return;
+            }
+
+            OverlappingBars.Remove(window);
+        }
+
         public int RegisterBar(AppBarWindow abWindow)
         {
             lock (appBarLock)
@@ -405,6 +426,56 @@ namespace ManagedShell.AppBar
                         case AppBarEdge.Top:
                             topEdgeWindowHeight += window.WindowRect.Height;
                             break;
+                    }
+                }
+            }
+
+            if (!enabledBarsOnly)
+            {
+                foreach (var window in AutoHideBars)
+                {
+                    if (window.Screen.DeviceName == screen.DeviceName &&
+                        window.Handle != hWndIgnore &&
+                        (window.RequiresScreenEdge || !edgeBarsOnly))
+                    {
+                        switch (window.AppBarEdge)
+                        {
+                            case AppBarEdge.Left:
+                                leftEdgeWindowWidth += window.WindowRect.Width;
+                                break;
+                            case AppBarEdge.Right:
+                                rightEdgeWindowWidth += window.WindowRect.Width;
+                                break;
+                            case AppBarEdge.Bottom:
+                                bottomEdgeWindowHeight += window.WindowRect.Height;
+                                break;
+                            case AppBarEdge.Top:
+                                topEdgeWindowHeight += window.WindowRect.Height;
+                                break;
+                        }
+                    }
+                }
+                foreach (var window in OverlappingBars)
+                {
+                    if (window.Screen.DeviceName == screen.DeviceName &&
+                        window.Handle != hWndIgnore &&
+                        (window.RequiresScreenEdge || !edgeBarsOnly))
+                    {
+                        switch (window.AppBarEdge)
+                        {
+                            case AppBarEdge.Left:
+                                leftEdgeWindowWidth += window.WindowRect.Width;
+                                break;
+                            case AppBarEdge.Right:
+                                rightEdgeWindowWidth += window.WindowRect.Width;
+                                break;
+                            case AppBarEdge.Bottom:
+                                bottomEdgeWindowHeight += window.WindowRect.Height;
+                                break;
+                            case AppBarEdge.Top:
+                                topEdgeWindowHeight += window.WindowRect.Height;
+                                break;
+                        }
                     }
                 }
             }
