@@ -42,6 +42,7 @@
 			Windows.Globalization.DayOfWeek;
 			Windows.Management.Deployment;
 			Windows.Storage;
+			Windows.Storage.Provider.FileUpdateStatus;
 			Windows.System.IUser;
 			Windows.System.ProcessorArchitecture;
 			Windows.System.User;
@@ -50,6 +51,7 @@
 			Windows.Foundation.Diagnostics;
 			Windows.Foundation.PropertyType;
 			Windows.Storage.BulkAccess;
+			Windows.Storage.Provider;
 		</CsWinRTExcludes>
 	</PropertyGroup>
 
