@@ -194,6 +194,15 @@ namespace ManagedShell.AppBar
                     _appBarManager.UnregisterAutoHideBar(this);
                     AnimateAutoHide(false, true);
                 }
+
+                if (AppBarMode == AppBarMode.None)
+                {
+                    _appBarManager.RegisterOverlappingBar(this);
+                }
+                else
+                {
+                    _appBarManager.UnregisterOverlappingBar(this);
+                }
             }
         }
 
@@ -294,6 +303,10 @@ namespace ManagedShell.AppBar
             {
                 _appBarManager.RegisterAutoHideBar(this);
             }
+            else
+            {
+                _appBarManager.RegisterOverlappingBar(this);
+            }
 
             // hide from alt-tab etc
             WindowHelper.HideWindowFromTasks(Handle);
@@ -363,6 +376,7 @@ namespace ManagedShell.AppBar
             {
                 UnregisterAppBar();
                 _appBarManager.UnregisterAutoHideBar(this);
+                _appBarManager.UnregisterOverlappingBar(this);
                 AutoHideElement?.RenderTransform?.BeginAnimation(TranslateTransform.YProperty, null);
                 AutoHideElement?.RenderTransform?.BeginAnimation(TranslateTransform.XProperty, null);
 
