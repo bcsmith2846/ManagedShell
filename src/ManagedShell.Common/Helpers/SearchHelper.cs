@@ -25,6 +25,7 @@ namespace ManagedShell.Common.Helpers
         static SearchHelper()
         {
             m_results = new ThreadSafeObservableCollection<SearchResult>();
+            m_resultsReadOnly = new ReadOnlyObservableCollection<SearchResult>(m_results);
         }
 
         public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register("SearchText",
@@ -193,10 +194,11 @@ namespace ManagedShell.Common.Helpers
         }
 
         static ThreadSafeObservableCollection<SearchResult> m_results;
+        static ReadOnlyObservableCollection<SearchResult> m_resultsReadOnly;
 
         public ReadOnlyObservableCollection<SearchResult> Results
         {
-            get { return new ReadOnlyObservableCollection<SearchResult>(m_results); }
+            get { return m_resultsReadOnly; }
         }
     }
 }
